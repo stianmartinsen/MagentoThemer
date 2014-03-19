@@ -7,14 +7,17 @@ class MagentoThemer:
     AddContentView = None
     Content = None
 
+class MagentoThemerInsertConentCommand(sublime_plugin.TextCommand):
+    def run(self, edit, **args):
+        self.view.insert(edit, 0, MagentoThemer.Content)
+
+        MagentoThemer.AddContentView = None
+        MagentoThemer.Content = None
+
 class MagentoThemerListener(sublime_plugin.EventListener):
     def on_load(self, view):
         if MagentoThemer.AddContentView.id() == view.id():
-            edit = view.begin_edit()
-            view.insert(edit, 0, MagentoThemer.Content)
-            view.end_edit(edit)
-            MagentoThemer.AddContentView = None
-            MagentoThemer.Content = None
+            view.run_command("magento_themer_insert_conent")
 
 class MagentoThemerCommand(sublime_plugin.WindowCommand):
     def run(self):
