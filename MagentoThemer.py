@@ -16,7 +16,7 @@ class MagentoThemerInsertConentCommand(sublime_plugin.TextCommand):
 
 class MagentoThemerListener(sublime_plugin.EventListener):
     def on_load(self, view):
-        if MagentoThemer.AddContentView.id() == view.id():
+        if MagentoThemer.AddContentView and MagentoThemer.AddContentView.id() == view.id():
             view.run_command("magento_themer_insert_conent")
 
 class MagentoThemerCommand(sublime_plugin.WindowCommand):
