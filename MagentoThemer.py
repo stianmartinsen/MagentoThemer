@@ -34,7 +34,7 @@ class MagentoThemerCommand(sublime_plugin.WindowCommand):
 
         new_interface_name = text.split('/')[0]
         new_theme_name = text.split('/')[1]
-        new_file = re.sub(r'([^$]*)/base/default/([^$]*)', r'\1/' + new_interface_name + '/' + new_theme_name + r'/\2', old_file)
+        new_file = re.sub(r'([^$]*)/(base|rwd)/default/([^$]*)', r'\1/' + new_interface_name + '/' + new_theme_name + r'/\3', old_file)
 
         # Recursively create parent folder if it does not exist
         if not os.path.exists(os.path.dirname(new_file)):
