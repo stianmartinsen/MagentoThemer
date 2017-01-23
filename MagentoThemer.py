@@ -27,14 +27,22 @@ class MagentoThemerCommand(sublime_plugin.WindowCommand):
         self.window.show_input_panel("Give me: <interface name>/<theme name>:", "%s/default" % project_name, self.on_done, None, None)
 
     def on_done(self, text):
-        # design/frontend/base/default/template/checkout/cart/item/default.phtml
         view = self.window.active_view()
         old_file = view.file_name()
         MagentoThemer.Content = view.substr(sublime.Region(0, view.size()))
 
         new_interface_name = text.split('/')[0]
         new_theme_name = text.split('/')[1]
-        new_file = re.sub(r'([^$]*)/(base|rwd)/default/([^$]*)', r'\1/' + new_interface_name + '/' + new_theme_name + r'/\3', old_file)
+
+        root = re.match(r'(.*?)/vendor', old_file).group(1)
+
+        vendor_name = re.match(r'(.*)/vendor/(.*?)/', old_file).group(2).capitalize()
+        module_name = re.match(r'(.*)/vendor/(.*?)/(.*?)/', old_file).group(3).replace('module-', '').capitalize()
+        module_name = vendor_name + '_' + module_name
+
+        template_name = re.match(r'(.*)/templates/(.*)', old_file).group(2)
+
+        new_file = root + '/app/design/frontend/' + new_interface_name + '/' + new_theme_name + '/' + module_name + '/templates/' + template_name
 
         # Recursively create parent folder if it does not exist
         if not os.path.exists(os.path.dirname(new_file)):
